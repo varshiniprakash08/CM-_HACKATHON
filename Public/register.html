@@ -14,7 +14,10 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f2f5;
+<<<<<<< HEAD
             flex-direction: column; /* Aligning content in a column */
+=======
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
         }
 
         /* Form styling */
@@ -25,7 +28,10 @@
             width: 100%;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+<<<<<<< HEAD
             margin-bottom: 20px; /* Space between form and login link */
+=======
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
         }
 
         form h2 {
@@ -65,6 +71,10 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
+<<<<<<< HEAD
+=======
+            margin-top: 10px;
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
         }
 
         button:hover {
@@ -74,8 +84,13 @@
         /* Text at the bottom */
         .login-link {
             text-align: center;
+<<<<<<< HEAD
             color: #333;
             margin-top: 10px;
+=======
+            margin-top: 15px;
+            color: #333;
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
         }
 
         .login-link a {
@@ -89,6 +104,7 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <!-- Register Form -->
     <form action="/register" method="post">
         <h2>Register</h2>
@@ -111,10 +127,36 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
+=======
+        <h2>Register</h2>
+    <!-- Register Form -->
+    <form action="/post" method="post">
+
+
+        <!-- Full Name Field -->
+        <label for="username">Full Name</label>
+        <input type="text" id="name" name="username" placeholder="Enter your full name" required>
+
+        <!-- Role Selection -->
+        <label for="role">Register as:</label>
+        <select id="role" name="role" required>
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="institution">Institution</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <!-- Email Field -->
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
         <!-- Password Field -->
         <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
+<<<<<<< HEAD
         <!-- Register Button -->
         <button type="submit">Register</button>
     </form>
@@ -123,5 +165,20 @@
     <p class="login-link">
         Already have an account? <a href="login.html">Login here</a>
     </p>
+=======
+        <!-- Confirm Password Field
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required> -->
+
+        <!-- Register Button -->
+        <button type="submit">Register</button>
+
+        <!-- Redirect to Login -->
+
+    </form>
+        <p class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </p>
+>>>>>>> 847a5c786f1cba5a5d7a96f9af5410c9d404905f
 </body>
 </html>
