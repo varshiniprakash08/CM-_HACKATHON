@@ -1,9 +1,9 @@
 const { compile } = require("ejs");
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const path = require("path");
 const port = 5500;
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -25,7 +25,7 @@ const generationConfig = {
   maxOutputTokens: 8192,
   responseMimeType: "text/plain",
 };
-
+      
 ///
 
 ///
@@ -38,20 +38,20 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 
-mongoose.connect("mongodb://localhost:27017");
-const db = mongoose.connection;
-db.once("open", () => {
-  console.log("Mongodb connection successful");
-});
+// mongoose.connect("mongodb://localhost:27017");
+// const db = mongoose.connection;
+// db.once("open", () => {
+//   console.log("Mongodb connection successful");
+// });
 
-const userSchema = new mongoose.Schema({
-  username: String,
-  role: String,
-  email: String,
-  password: Number,
-});
+// const userSchema = new mongoose.Schema({
+//   username: String,
+//   role: String,
+//   email: String,
+//   password: Number,
+// });
 
-const Users = mongoose.model("User", userSchema);
+// const Users = mongoose.model("User", userSchema);
 
 app.get("/", (req, res) => {
   console.log("NEW REQUEST");
@@ -59,58 +59,43 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./Public/main.html"));
 });
 
-app.post("/register", async (req, res) => {
-  console.log("registration");
-  const { username, role, email, password } = req.body;
+// app.post("/register", async (req, res) => {
+//   console.log("registration");
+//   const { username, role, email, password } = req.body;
 
-  try {
-    const usernameExists = await Users.findOne({ username: req.body.username });
-    const emailExists = await Users.findOne({ email: req.body.email });
-    if (usernameExists && emailExists) {
-      res.status(400).send("Username and email already taken");
-    }
-    if (emailExists) {
-      res.status(400).send("Email already taken");
-    }
-    if (usernameExists) {
-      return res.status(400).send("Username already taken");
-    } else {
-      isLogedin = true;
-      console.log(isLogedin);
-      const newUser = new Users({ username, role, email, password });
-      await newUser.save();
-      //after registering redirect to loginnnnn.
-      res.sendFile(path.join(__dirname, "/Public/login.html"));
-      console.log("reg sucess");
-    }
-  } catch (err) {
-    // Save new user to MongoDB
+//   try {
+//     const usernameExists = await Users.findOne({ username: req.body.username });
+//     const emailExists = await Users.findOne({ email: req.body.email });
+//     if (usernameExists && emailExists) {
+//       res.status(400).send("Username and email already taken");
+//     }
+//     if (emailExists) {
+//       res.status(400).send("Email already taken");
+//     }
+//     if (usernameExists) {
+//       return res.status(400).send("Username already taken");
+//     } else {
+//       isLogedin = true;
+//       console.log(isLogedin);
+//       const newUser = new Users({ username, role, email, password });
+//       await newUser.save();
+//       //after registering redirect to loginnnnn.
+//       res.sendFile(path.join(__dirname, "/Public/login.html"));
+//       console.log("reg sucess");
+//     }
+//   } catch (err) {
+//     // Save new user to MongoDB
 
-    res.status(500).send("Error registering user. Please try again.");
-    console.error(err);
-  }
-});
+//     res.status(500).send("Error registering user. Please try again.");
+//     console.error(err);
+//   }
+// });
 
-app.post("/login", async (req, res) => {
+app.post("/Post_Login/landing.html", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const check_ = await Users.findOne({ username, password });
-    if (!check_) {
-      res.send("user name cannot be found or wrong credentials");
-    }
-
-    // const isPasswordMatch = await bcrypt.compare(req.body.password, check_.password);
-    // if(isPasswordMatch){
-    //   res.send("sucess")
-    // }
-    else {
       res.sendFile(path.join(__dirname, "./Public/Post_Login/landing.html"));
-      const token = jwt.sign({ userId: check_._id }, 'your_secret_key', { expiresIn: '2h' });
-      // res.json({ token });
-      console.log(token);
-    }
 
-    console.log("Users", check_);
   } catch (err) {
     console.log(err);
     res.send("failed");
@@ -121,8 +106,8 @@ app.post("/login", async (req, res) => {
 app.post("/Gen_AI", async (req, res) => {
   console.log("AI REQUESTED");
 
-  const { section, course, weak } = req.body;
-  console.log(section, course, weak);
+  const { section, course, weak, duration} = req.body;
+  console.log(section, course, weak, duration);
 
   async function run() {
     const chatSession = model.startChat({
@@ -136,12 +121,12 @@ app.post("/Gen_AI", async (req, res) => {
         ". I am preparing for " +
         course +
         " and am weak in " +
-        weak +
+        weak +"and the time left to prepare is "+duration+" months"+
         `generate me the road_map and timetable for this data, follow the following schema 
   RoadMap:{
     Phase_1:{
       Duration,
-      Startegy,
+      Strategy,
       TimeTable:{
         Daily,
         Weekly,
@@ -154,7 +139,7 @@ app.post("/Gen_AI", async (req, res) => {
 
     Phase_2:{
       Duration,
-      Startegy,
+      Strategy,
       TimeTable:{
         Daily,
         Weekly,
@@ -166,7 +151,7 @@ app.post("/Gen_AI", async (req, res) => {
 
     Phase_3:{
       Duration,
-      Startegy,
+      Strategy,
       TimeTable:{
         Daily,
         Weekly,
@@ -174,7 +159,7 @@ app.post("/Gen_AI", async (req, res) => {
       },
       Notes,
       Review
-    }
+    },
 
     Recomended Books:{
       
