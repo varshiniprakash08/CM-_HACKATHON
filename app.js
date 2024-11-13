@@ -3,6 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const port = 5500;
+const {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} = require("@google/generative-ai");
+
 // const alert = require("alert");
 // const popup = require('popups');
 
@@ -10,6 +16,7 @@ const app = express();
 app.use(express.static("./Public"));
 app.use(express.static("./Public/Post_Login"));
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 mongoose.connect("mongodb://localhost:27017");
 const db = mongoose.connection;
@@ -29,11 +36,13 @@ const Users = mongoose.model("User", userSchema);
 
 app.get("/", (req, res) => {
     console.log("NEW REQUEST");
-    res.sendFile(path.join(__dirname, "/Public/index.html"));
+    // res.send("Hi")
+    res.sendFile(path.join(__dirname, "./Public/main.html"));
 
 });
 
 app.post("/register", async (req, res) => {
+  console.log("registration")
   const { username, role, email, password } = req.body;
 
   try {
@@ -53,7 +62,7 @@ app.post("/register", async (req, res) => {
       const newUser = new Users({ username, role, email, password });
       await newUser.save();
       //after registering redirect to loginnnnn.
-      res.sendFile(path.join(__dirname, "/Public/Post_Login/landing.html"));
+      res.sendFile(path.join(__dirname, "/Public/login.html"));
       console.log("reg sucess");
     }
   } catch (err) {
@@ -68,10 +77,9 @@ app.post("/login", async(req, res)=>{
 
   const{username,password} = req.body;
   try{
-    const check_ = await Users.findOne({ username: req.body.username , password});
-    console.log(req.body.username)
+    const check_ = await Users.findOne({ username, password});
     if(!check_){
-      res.send("user name cannot be found")
+      res.send("user name cannot be found or wrong credentials")
     }
     
     // const isPasswordMatch = await bcrypt.compare(req.body.password, check_.password);
@@ -79,8 +87,10 @@ app.post("/login", async(req, res)=>{
     //   res.send("sucess")
     // }
     else{
-      res.send("wrong password");
+      res.sendFile(path.join(__dirname,"./Public/Post_Login/landing.html"))
     }
+
+    console.log("Users", check_)
   }
   catch(err){
     console.log(err)
@@ -89,12 +99,7 @@ app.post("/login", async(req, res)=>{
 
 })
 
-// if(isLogedin){
-//   console.log("Logged_In")
-//   app.get("/Arivu", (req,res)=>{
-//     res.sendFile(path.join(__dirname, "/Public/Post_Login/landing.html"));
-//   })
-// }
+
 
 app.listen(port, (err) => {
   if (err) {
