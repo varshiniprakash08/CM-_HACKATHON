@@ -4,6 +4,10 @@ const express = require("express");
 const path = require("path");
 const port = 5500;
 // const jwt = require("jsonwebtoken");
+const session = require("express-session");
+
+
+
 const {
   GoogleGenerativeAI,
   HarmCategory,
@@ -13,13 +17,13 @@ const {
 const genAI = new GoogleGenerativeAI("AIzaSyAKQ_tX2oP16TZkvrAFSBmq6QxQFA7lXJw");
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-1.5-pro-002",
+  systemInstruction: "Hi your name is Arivu and you work fr the company named Arivu, which provides their users a ai based study plan solutions.\nyour main goal is to answer to user's queries and provide them solutions for thier questions.\n",
 });
 
 
-
 const generationConfig = {
-  temperature: 1,
+  temperature: 1.5,
   topP: 0.95,
   topK: 40,
   maxOutputTokens: 8192,
@@ -36,6 +40,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.set('view engine', 'ejs');
+app.use(session({
+  secret: 'valley', // Replace with a real secret key for production
+  resave: false,
+  saveUninitialized: true
+}));
 
 
 // mongoose.connect("mongodb://localhost:27017");
@@ -123,49 +132,49 @@ app.post("/Gen_AI", async (req, res) => {
         " and am weak in " +
         weak +"and the time left to prepare is "+duration+" months"+
         `generate me the road_map and timetable for this data, follow the following schema 
-  RoadMap:{
-    Phase_1:{
-      Duration,
-      Strategy,
-      TimeTable:{
-        Daily,
-        Weekly,
-        Monthly
-      },
-      Notes,
-      Review
+      RoadMap:{
+        Phase_1:{
+          Duration,
+          Strategy,
+          TimeTable:{
+            Daily,
+            Weekly,
+            Monthly
+          },
+          Notes,
+          Review
 
-    },
+        },
 
-    Phase_2:{
-      Duration,
-      Strategy,
-      TimeTable:{
-        Daily,
-        Weekly,
-        Monthly
-      },
-      Notes,
-      Review
-    },
+        Phase_2:{
+          Duration,
+          Strategy,
+          TimeTable:{
+            Daily,
+            Weekly,
+            Monthly
+          },
+          Notes,
+          Review
+        },
 
-    Phase_3:{
-      Duration,
-      Strategy,
-      TimeTable:{
-        Daily,
-        Weekly,
-        Monthly
-      },
-      Notes,
-      Review
-    },
+        Phase_3:{
+          Duration,
+          Strategy,
+          TimeTable:{
+            Daily,
+            Weekly,
+            Monthly
+          },
+          Notes,
+          Review
+        },
 
-    Recomended Books:{
-      
-    }
-    
-  } and the timetable and recomended books must be a string and include all subjects ,add no explanation or additional content and dont add any extra special characters just rturn a plain json object according to the given schema`);
+        Recomended Books:{
+            
+        }
+        
+      } and recomended books must be strictly a single string and include all subjects ,add no explanation or additional content and dont add any extra special characters just rturn a plain json object according to the given schema`);
     console.log(result.response.text());
 
     if (result) {
@@ -181,6 +190,31 @@ app.post("/Gen_AI", async (req, res) => {
   run();
 });
 
+app.get("/chat", async(req,res)=>{
+  res.render("chat")
+})
+
+app.post("/chat", async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    const chatSession = model.startChat({
+      generationConfig,
+      history: [],
+    });
+
+    const result_chat = await chatSession.sendMessage(message+ "do not add any special characters while answering and answer in clean format");
+
+    // Parse and clean up response if necessary
+    const responseText = result_chat.response.text().trim();
+
+    // Send the response back as JSON to the frontend
+    res.json({ response: responseText });
+  } catch (err) {
+    console.error("Error in chat session:", err);
+    res.json({ response: "There was an error processing your message. Please try again." });
+  }
+});
 
 
 app.listen(port, (err) => {
@@ -189,4 +223,4 @@ app.listen(port, (err) => {
   } else {
     console.log("Server Running On Port " + port);
   }
-});
+})

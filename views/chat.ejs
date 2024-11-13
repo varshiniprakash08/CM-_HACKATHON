@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 80%;
+    }
+
+    .user-message {
+      background-color: #f1f1f1;
+      margin-left: auto;
+    }
+
+    .ai-message {
+      background-color: #e0f7fa;
+      margin-right: auto;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+        margin-top: 15px;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <h2>Chat with AI</h2>
+
+    <div id="chat-history"></div>
+
+    <div class="input-container">
+      <form id="chat-form" action="/chat" method="POST">
+        <input type="text" id="userMessage" name="message" placeholder="Ask me a question" required>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById('chat-form');
+    const userMessageInput = document.getElementById('userMessage');
+    const chatHistoryDiv = document.getElementById('chat-history');
+
+    // Function to clean AI response
+// Function to clean AI response
+function cleanResponse(responseText) {
+  // Remove any occurrences of * surrounding text without affecting spaces or line breaks
+  responseText = responseText.replace(/\*/g, ''); // Remove all '*' characters
+
+  // Add line breaks after each newline
+  responseText = responseText.replace(/\n/g, '<br>'); // Convert newlines to <br> tags
+
+  return responseText;
+}
+    // Function to clean AI response
+    function cleanResponse(responseText) {
+    // Remove any occurrences of * surrounding text without affecting spaces or line breaks
+    responseText = responseText.replace(/\*/g, ''); // Remove all '*' characters
+
+    // Add line breaks after each newline
+    responseText = responseText.replace(/\n/g, '<br>'); // Convert newlines to <br> tags
+
+    return responseText;
+    }
+
+
+
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const message = userMessageInput.value;
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.classList.add('message', 'user-message');
+      userMessageDiv.innerHTML = `<strong>You:</strong> ${message}`;
+      chatHistoryDiv.appendChild(userMessageDiv);
+
+      // Clear input field
+      userMessageInput.value = '';
+
+      // Send message to server
+      fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Clean the AI response before displaying
+        const cleanAIResponse = cleanResponse(data.response);
+        
+        const aiMessageDiv = document.createElement('div');
+        aiMessageDiv.classList.add('message', 'ai-message');
+        aiMessageDiv.innerHTML = `<strong>AI:</strong> ${cleanAIResponse}`;
+        chatHistoryDiv.appendChild(aiMessageDiv);
+
+        // Scroll to the latest message
+        chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+  
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 80%;
+    }
+
+    .user-message {
+      background-color: #f1f1f1;
+      margin-left: auto;
+    }
+
+    .ai-message {
+      background-color: #e0f7fa;
+      margin-right: auto;
+    }
+
+    .input-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <h2>Chat with AI</h2>
+
+    <div id="chat-history"></div>
+
+    <div class="input-container">
+      <form id="chat-form" action="/chat" method="POST">
+        <input type="text" id="userMessage" name="message" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById('chat-form');
+    const userMessageInput = document.getElementById('userMessage');
+    const chatHistoryDiv = document.getElementById('chat-history');
+
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const message = userMessageInput.value;
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.classList.add('message', 'user-message');
+      userMessageDiv.innerHTML = `<strong>You:</strong> ${message}`;
+      chatHistoryDiv.appendChild(userMessageDiv);
+
+      // Clear input field
+      userMessageInput.value = '';
+
+      // Send message to server
+      fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const aiMessageDiv = document.createElement('div');
+        aiMessageDiv.classList.add('message', 'ai-message');
+        aiMessageDiv.innerHTML = `<strong>AI:</strong> ${data.response}`;
+        chatHistoryDiv.appendChild(aiMessageDiv);
+
+        // Scroll to the latest message
+        chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+  
+</body>
+</html> -->

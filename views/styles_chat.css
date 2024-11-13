@@ -1,0 +1,21 @@
+#chatContainer {
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  .message {
+    padding: 5px;
+    margin: 5px 0;
+  }
+  
+  .user-message {
+    color: blue;
+    text-align: right;
+  }
+  
+  .bot-message {
+    color: green;
+    text-align: left;
+  }
+  
