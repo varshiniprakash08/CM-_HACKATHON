@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Preparation RoadMap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            height: 90vh;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 40px;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .phase {
+            background-color: #ffffff;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .phase:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .phase p {
+            color: #555;
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .phase ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .phase ul li {
+            background-color: #f9f9f9;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .phase ul li:hover {
+            background-color: #e8f5e9;
+            cursor: pointer;
+        }
+
+        .recommendation {
+            margin-top: 40px;
+            background-color: #e0f7fa;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .recommendation:hover {
+            background-color: #b2ebf2;
+            transform: translateY(-5px);
+        }
+
+        .recommendation h4 {
+            color: #0288d1;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .recommendation p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* For smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 30px;
+                margin-bottom: 30px;
+            }
+
+            .phase h3 {
+                font-size: 24px;
+            }
+
+            .phase p {
+                font-size: 14px;
+            }
+
+            .phase ul li {
+                font-size: 14px;
+            }
+
+            .recommendation h4 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Preparation RoadMap</h2>
+
+    <% Object.keys(result.RoadMap).forEach(function(phase) { %>
+        <% if (phase !== "Recomended Books") { %>
+            <div class="phase">
+                <h3><%= phase.replace(/_/g, ' ') %></h3>
+                <p><strong>Duration:</strong> <%= result.RoadMap[phase].Duration %></p>
+                <p><strong>Strategy:</strong> <%= result.RoadMap[phase].Startegy %></p>
+
+                <% if (result.RoadMap[phase].TimeTable) { %>
+                    <h4>TimeTable:</h4>
+                    <ul>
+                        <% if (result.RoadMap[phase].TimeTable.Daily) { %>
+                            <li><strong>Daily:</strong> <%= result.RoadMap[phase].TimeTable.Daily %></li>
+                        <% } %>
+                        <% if (result.RoadMap[phase].TimeTable.Weekly) { %>
+                            <li><strong>Weekly:</strong> <%= result.RoadMap[phase].TimeTable.Weekly %></li>
+                        <% } %>
+                        <% if (result.RoadMap[phase].TimeTable.Monthly) { %>
+                            <li><strong>Monthly:</strong> <%= result.RoadMap[phase].TimeTable.Monthly %></li>
+                        <% } %>
+                    </ul>
+                <% } %>
+
+                <p><strong>Notes:</strong> <%= result.RoadMap[phase].Notes %></p>
+                <p><strong>Review:</strong> <%= result.RoadMap[phase].Review %></p>
+            </div>
+        <% } %>
+    <% }); %>
+
+    <% if (result.RoadMap["Recomended Books"]) { %>
+        <div class="recommendation">
+            <h4>Recommended Books:</h4>
+            <p><%= result.RoadMap["Recomended Books"] %></p>
+        </div>
+    <% } %>
+</div>
+
+</body>
+</html>

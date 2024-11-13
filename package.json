@@ -12,9 +12,12 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "alert": "^6.0.2",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "html-pdf": "^3.0.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.1",
     "popups": "^1.1.3"

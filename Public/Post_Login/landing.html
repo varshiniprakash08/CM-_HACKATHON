@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Information Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
 </head>
 <body>
     <header>
@@ -12,20 +12,20 @@
         <p>Fill out the form below to receive a personalized study roadmap</p>
     </header>
     
-    <section id="form-section">
-        <form id="student-form">
-            <label for="class">Class/Grade:</label>
-            <input type="text" id="class" name="class" placeholder="Enter your class or grade" required>
 
-            <label for="course">Current Course:</label>
+        <form action="/Gen_AI" method="post" id="student-form">
+            <label for="section" name="section">Class/Grade:</label>
+            <input type="text" id="section" name="section" placeholder="Enter your class or grade" required>
+
+            <label for="course" name="course">Current Course:</label>
             <input type="text" id="course" name="course" placeholder="Enter the course you're pursuing" required>
 
-            <label for="subject">Subject You Find Hard:</label>
-            <input type="text" id="subject" name="subject" placeholder="Enter the subject you find difficult" required>
+            <label for="weak" name="weak">Subject You Find Hard:</label>
+            <input type="text" id="weak" name="weak" placeholder="Enter the subject you find difficult" required>
 
-            <button type="button" onclick="generateRoadmap()">Generate Roadmap</button>
+            <button type="submit">Generate Roadmap</button>
         </form>
-    </section>
+
 
     <section id="roadmap">
         <h2>Your Personalized Study Roadmap</h2>
